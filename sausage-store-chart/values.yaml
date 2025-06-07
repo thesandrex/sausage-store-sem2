@@ -23,7 +23,7 @@ frontend:
       cpu: "100m"
     limits:
       memory: "128Mi"
-      cpu: "1"
+      cpu: "200m"
   nginxConf: nginx.conf
 
 backend:
@@ -54,7 +54,7 @@ backend:
       cpu: "100m"
     limits:
       memory: "512Mi"
-      cpu: "1"
+      cpu: "200m"
   containerPort: 8080
   livenessProbe:
     httpGet:
@@ -95,7 +95,7 @@ backend-report:
       cpu: "100m"
     limits:
       memory: "256Mi"
-      cpu: "500m"
+      cpu: "200m"
 
 infra:
   postgresql:
@@ -112,7 +112,7 @@ infra:
         cpu: "100m"
       limits:
         memory: "512Mi"
-        cpu: "500m"
+        cpu: "200m"
   mongodb:
     env:
       MONGO_INITDB_ROOT_USERNAME: root
