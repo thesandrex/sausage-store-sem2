@@ -44,8 +44,8 @@ backend:
   strategy:
     type: RollingUpdate
     rollingUpdate:
+      maxUnavailable: 1
       maxSurge: 1
-      maxUnavailable: 0
   image: crocksgift/sausage-store-backend:latest
   imagePullPolicy: Always
   resources:
@@ -60,7 +60,7 @@ backend:
     httpGet:
       path: /actuator/health
       port: 8080
-    initialDelaySeconds: 15
+    initialDelaySeconds: 20
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
@@ -74,15 +74,21 @@ backend:
           controlledResources: ["cpu", "memory"]
 
 backend-report:
+  replicas: 1
   strategy:
     type: Recreate
   image: crocksgift/sausage-store-backend-report:latest
   imagePullPolicy: Always
-  containerPort: 8081
-  envFromConfigMap:
-    portKey: PORT
-  envFromSecret:
-    dbKey: DB
+  containerPort: 3000
+  configMap:
+    port: "3000"
+  secret:
+    mongodbUri: mongodb://reports:reportspassword@mongodb:27017/sausage-store
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 75
   resources:
     requests:
       memory: "128Mi"
@@ -90,23 +96,24 @@ backend-report:
     limits:
       memory: "256Mi"
       cpu: "500m"
-  hpa:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 3
-    targetCPUUtilizationPercentage: 80
 
 infra:
   postgresql:
-    auth:
-      username: store
-      password: storepassword
-      database: sausage-store
-    primary:
-      persistence:
-        enabled: true
-        storageClass: standard
-        size: 1Gi
+    enabled: true
+    postgresUser: store
+    postgresPassword: storepassword
+    postgresDb: sausage-store
+    containerPort: 5432
+    storage:
+      size: 1Gi
+      storageClassName: standard
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
   mongodb:
     env:
       MONGO_INITDB_ROOT_USERNAME: root
