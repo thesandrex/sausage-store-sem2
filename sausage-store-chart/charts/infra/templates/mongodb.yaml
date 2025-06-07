@@ -33,15 +33,9 @@ spec:
         volumeMounts:
         - name: mongodb-data
           mountPath: /data/db
-  volumeClaimTemplates:
-  - metadata:
-      name: mongodb-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: yc-network-hdd
-      resources:
-        requests:
-          storage: 1Gi
+      volumes:
+        - name: mongodb-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
