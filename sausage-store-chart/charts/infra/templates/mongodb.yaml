@@ -15,6 +15,26 @@ spec:
       labels:
         app: mongodb
     spec:
+      initContainers:
+      - name: init-mongodb
+        image: mongo:7.0
+        command:
+        - bash
+        - -c
+        - |
+          until mongosh --host mongodb -u root -p rootpassword --eval "print('waited for connection')"
+          do
+            echo "waiting for mongodb connection..."
+            sleep 2
+          done
+          mongosh --host mongodb -u root -p rootpassword --eval '
+            db = db.getSiblingDB("sausage-store");
+            db.createUser({
+              user: "reports",
+              pwd: "reportspassword",
+              roles: [{ role: "readWrite", db: "sausage-store" }]
+            });
+          '
       containers:
       - name: mongodb
         image: mongo:7.0
