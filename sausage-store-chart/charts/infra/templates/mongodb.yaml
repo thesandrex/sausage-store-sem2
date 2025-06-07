@@ -77,14 +77,24 @@ spec:
         - bash
         - -c
         - |
-          until mongosh --host mongodb -u root -p rootpassword --eval "print('waited for connection')"
-          do
-            echo "waiting for mongodb connection..."
-            sleep 2
+          echo "Waiting for MongoDB to be ready..."
+          for i in {1..30}; do
+            if mongosh --host mongodb -u root -p rootpassword --eval "db.adminCommand('ping')" > /dev/null 2>&1; then
+              echo "MongoDB is ready!"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "MongoDB failed to become ready in time"
+              exit 1
+            fi
+            echo "Attempt $i: MongoDB not ready yet, waiting..."
+            sleep 5
           done
-          echo "MongoDB is ready"
+          
+          echo "Creating reports user..."
           mongosh --host mongodb -u root -p rootpassword --eval '
             db = db.getSiblingDB("sausage-store");
+            db.dropUser("reports");
             db.createUser({
               user: "reports",
               pwd: "reportspassword",

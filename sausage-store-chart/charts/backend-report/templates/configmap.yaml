@@ -4,3 +4,12 @@ metadata:
   name: backend-report-config
 data:
   PORT: {{ .Values.configMap.port | quote }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-report-env
+data:
+  .env: |
+    PORT=3000
+    DB=mongodb://reports:reportspassword@mongodb:27017/sausage-store
