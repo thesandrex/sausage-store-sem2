@@ -115,8 +115,8 @@ infra:
         cpu: "200m"
   mongodb:
     env:
-      MONGO_INITDB_ROOT_USERNAME: reports
-      MONGO_INITDB_ROOT_PASSWORD: reportspassword
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
     containerPort: 27017
     resources:
       requests:
