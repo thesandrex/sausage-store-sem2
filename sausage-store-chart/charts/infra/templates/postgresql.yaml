@@ -5,6 +5,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: yc-network-hdd
   resources:
     requests:
       storage: {{ .Values.postgresql.storage.size }}
