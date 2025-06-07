@@ -7,8 +7,8 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.postgresql.storage.size }}
-  storageClassName: {{ .Values.postgresql.storage.storageClassName }}
+      storage: {{ .Values.infra.postgresql.storage.size }}
+  storageClassName: {{ .Values.infra.postgresql.storage.storageClassName }}
 
 ---
 apiVersion: apps/v1
@@ -29,14 +29,14 @@ spec:
         - name: postgresql
           image: postgres:15
           ports:
-            - containerPort: {{ .Values.postgresql.containerPort }}
+            - containerPort: {{ .Values.infra.postgresql.containerPort }}
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.postgresUser | quote }}
+              value: {{ .Values.infra.postgresql.postgresUser | quote }}
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.postgresql.postgresPassword | quote }}
+              value: {{ .Values.infra.postgresql.postgresPassword | quote }}
             - name: POSTGRES_DB
-              value: {{ .Values.postgresql.postgresDb | quote }}
+              value: {{ .Values.infra.postgresql.postgresDb | quote }}
           volumeMounts:
             - name: postgredb
               mountPath: /var/lib/postgresql/data
