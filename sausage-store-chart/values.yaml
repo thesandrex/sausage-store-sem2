@@ -13,6 +13,7 @@ frontend:
     path: /
     pathType: Prefix
     tls:
+      enabled: true
       secretName: 2sem-students-projects-wildcard-secret
   containerPort: 80
   image: crocksgift/sausage-store-frontend:latest
@@ -59,22 +60,18 @@ backend:
     httpGet:
       path: /actuator/health
       port: 8080
-    initialDelaySeconds: 30
+    initialDelaySeconds: 20
     periodSeconds: 10
+    timeoutSeconds: 5
     failureThreshold: 3
   vpa:
+    enabled: true
     updatePolicy:
       updateMode: "Off"
     resourcePolicy:
       containerPolicies:
         - containerName: "*"
           controlledResources: ["cpu", "memory"]
-          minAllowed:
-            cpu: "100m"
-            memory: "256Mi"
-          maxAllowed:
-            cpu: "2"
-            memory: "1Gi"
 
 backend-report:
   replicas: 1
@@ -83,31 +80,40 @@ backend-report:
   image: crocksgift/sausage-store-backend-report:latest
   imagePullPolicy: Always
   containerPort: 3000
-  envFrom:
-    configMapRef:
-      name: backend-report-config
-    secretRef:
-      name: backend-report-secret
+  configMap:
+    port: "3000"
+  secret:
+    mongodbUri: mongodb://reports:reportspassword@mongodb:27017/sausage-store
   hpa:
     enabled: true
     minReplicas: 1
     maxReplicas: 3
-    targetCPUUtilizationPercentage: 70
-  config:
-    port: "3000"
-  secret:
-    mongodbUri: mongodb://reports:reportspassword@mongodb:27017/sausage-store
+    targetCPUUtilizationPercentage: 75
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
 
 infra:
   postgresql:
+    enabled: true
     postgresUser: store
     postgresPassword: storepassword
     postgresDb: sausage-store
-    persistence:
-      enabled: true
-      storageClass: standard
-      accessMode: ReadWriteOnce
+    containerPort: 5432
+    storage:
       size: 1Gi
+      storageClassName: standard
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
   mongodb:
     env:
       MONGO_INITDB_ROOT_USERNAME: root
