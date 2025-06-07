@@ -66,7 +66,7 @@ metadata:
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-weight: "0"
-    helm.sh/hook-delete-policy: hook-succeeded
+    helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
 spec:
   template:
     spec:
@@ -77,19 +77,12 @@ spec:
         - bash
         - -c
         - |
-          until mongosh --host mongodb -u root -p rootpassword --eval "print('waited for connection')"
+          until mongosh --host mongodb -u reports -p reportspassword --eval "print('waited for connection')"
           do
             echo "waiting for mongodb connection..."
             sleep 2
           done
-          mongosh --host mongodb -u root -p rootpassword --eval '
-            db = db.getSiblingDB("sausage-store");
-            db.createUser({
-              user: "reports",
-              pwd: "reportspassword",
-              roles: [{ role: "readWrite", db: "sausage-store" }]
-            });
-          '
+          echo "MongoDB is ready"
         resources:
           requests:
             memory: "64Mi"
