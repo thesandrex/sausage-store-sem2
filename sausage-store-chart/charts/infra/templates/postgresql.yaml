@@ -9,6 +9,19 @@ spec:
     requests:
       storage: {{ .Values.postgresql.storage.size }}
 
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+spec:
+  selector:
+    app: postgresql
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: {{ .Values.postgresql.containerPort }}
+
+
 ---
 apiVersion: apps/v1
 kind: Deployment
