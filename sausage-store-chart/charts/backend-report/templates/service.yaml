@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-report
+spec:
+  selector:
+    app: backend-report
+  ports:
+    - protocol: TCP
+      port: {{ .Values.containerPort }}
+      targetPort: {{ .Values.containerPort }}
