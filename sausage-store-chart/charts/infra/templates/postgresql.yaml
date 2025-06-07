@@ -8,7 +8,6 @@ spec:
   resources:
     requests:
       storage: {{ .Values.postgresql.storage.size }}
-  storageClassName: {{ .Values.postgresql.storage.storageClassName }}
 
 ---
 apiVersion: apps/v1
