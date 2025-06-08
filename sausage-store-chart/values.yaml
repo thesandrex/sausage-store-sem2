@@ -113,6 +113,7 @@ infra:
       limits:
         memory: "128Mi"
         cpu: "200m"
+
   mongodb:
     env:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -125,6 +126,16 @@ infra:
       limits:
         memory: "256Mi"
         cpu: "100m"
+  
+  mongodbInit:
+    image: mongo:7.0
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 50m
+        memory: 128Mi
 
 # Helm release history limit
 historyMax: 3
