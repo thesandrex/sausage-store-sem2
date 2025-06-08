@@ -23,6 +23,27 @@ spec:
               name: mongodb-conf
         ports:
         - containerPort: {{ .Values.mongodb.containerPort }}
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - mongosh
+              - --eval
+              - |
+                db = db.getSiblingDB("sausage-store");
+                try {
+                  db.dropUser("reports");
+                } catch (err) {
+                  print("User reports does not exist yet, continuing...");
+                }
+                db.createUser({
+                  user: "reports",
+                  pwd: "reportspassword",
+                  roles: [
+                    { role: "readWrite", db: "sausage-store" }
+                  ]
+                });
+                print("User reports created successfully!");
         resources:
           requests:
             memory: "128Mi"
@@ -58,61 +79,3 @@ metadata:
 data:
   MONGO_INITDB_ROOT_USERNAME: {{ .Values.mongodb.env.MONGO_INITDB_ROOT_USERNAME }}
   MONGO_INITDB_ROOT_PASSWORD: {{ .Values.mongodb.env.MONGO_INITDB_ROOT_PASSWORD }}
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: mongodb-init
-  annotations:
-    helm.sh/hook: post-install
-    helm.sh/hook-weight: "0"
-    helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
-spec:
-  template:
-    spec:
-      containers:
-      - name: mongodb-init
-        image: mongo:7.0
-        command:
-        - bash
-        - -c
-        - |
-          echo "Waiting for MongoDB to be ready..."
-          for i in {1..30}; do
-            if mongosh --host mongodb -u root -p rootpassword --eval "db.adminCommand('ping')" > /dev/null 2>&1; then
-              echo "MongoDB is ready!"
-              break
-            fi
-            if [ $i -eq 30 ]; then
-              echo "MongoDB failed to become ready in time"
-              exit 0
-            fi
-            echo "Attempt $i: MongoDB not ready yet, waiting..."
-            sleep 5
-          done
-          
-          echo "Creating reports user..."
-          mongosh --host mongodb -u root -p rootpassword --eval '
-            db = db.getSiblingDB("sausage-store");
-            try {
-              db.dropUser("reports");
-            } catch (err) {
-              print("User reports does not exist yet, continuing...");
-            }
-            db.createUser({
-              user: "reports",
-              pwd: "reportspassword",
-              roles: [
-                { role: "readWrite", db: "sausage-store" }
-              ]
-            });
-            print("User reports created successfully!");
-          '
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "25m"
-          limits:
-            memory: "128Mi"
-            cpu: "50m"
-      restartPolicy: OnFailure
