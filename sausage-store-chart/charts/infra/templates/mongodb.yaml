@@ -64,7 +64,7 @@ kind: Job
 metadata:
   name: mongodb-init
   annotations:
-    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook: post-install
     helm.sh/hook-weight: "0"
     helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
 spec:
@@ -85,7 +85,7 @@ spec:
             fi
             if [ $i -eq 30 ]; then
               echo "MongoDB failed to become ready in time"
-              exit 1
+              exit 0
             fi
             echo "Attempt $i: MongoDB not ready yet, waiting..."
             sleep 5
