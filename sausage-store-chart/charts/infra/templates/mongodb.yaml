@@ -28,9 +28,9 @@ spec:
             command:
             - mongosh
             - -u
-            - $MONGO_INITDB_ROOT_USERNAME
+            - root
             - -p
-            - $MONGO_INITDB_ROOT_PASSWORD
+            - rootpassword
             - --eval
             - db.adminCommand('ping')
           initialDelaySeconds: 5
@@ -91,9 +91,9 @@ spec:
         command:
         - mongosh
         - -u
-        - $MONGO_INITDB_ROOT_USERNAME
+        - root
         - -p
-        - $MONGO_INITDB_ROOT_PASSWORD
+        - rootpassword
         - --eval
         - db.adminCommand('ping')
         env:
@@ -113,9 +113,9 @@ spec:
         command:
         - mongosh
         - -u
-        - $MONGO_INITDB_ROOT_USERNAME
+        - root
         - -p
-        - $MONGO_INITDB_ROOT_PASSWORD
+        - rootpassword
         - --eval
         - |
           db = db.getSiblingDB("sausage-store");
