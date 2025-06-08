@@ -23,27 +23,16 @@ spec:
               name: mongodb-conf
         ports:
         - containerPort: {{ .Values.mongodb.containerPort }}
-        lifecycle:
-          postStart:
-            exec:
-              command:
-              - mongosh
-              - --eval
-              - |
-                db = db.getSiblingDB("sausage-store");
-                try {
-                  db.dropUser("reports");
-                } catch (err) {
-                  print("User reports does not exist yet, continuing...");
-                }
-                db.createUser({
-                  user: "reports",
-                  pwd: "reportspassword",
-                  roles: [
-                    { role: "readWrite", db: "sausage-store" }
-                  ]
-                });
-                print("User reports created successfully!");
+        readinessProbe:
+          exec:
+            command:
+            - mongosh
+            - --eval
+            - db.adminCommand('ping')
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
         resources:
           requests:
             memory: "128Mi"
@@ -79,3 +68,56 @@ metadata:
 data:
   MONGO_INITDB_ROOT_USERNAME: {{ .Values.mongodb.env.MONGO_INITDB_ROOT_USERNAME }}
   MONGO_INITDB_ROOT_PASSWORD: {{ .Values.mongodb.env.MONGO_INITDB_ROOT_PASSWORD }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongodb-init
+  annotations:
+    helm.sh/hook: post-install
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
+spec:
+  backoffLimit: 5
+  template:
+    spec:
+      initContainers:
+      - name: wait-for-mongodb
+        image: mongo:7.0
+        command:
+        - mongosh
+        - --eval
+        - db.adminCommand('ping')
+      containers:
+      - name: mongodb-init
+        image: mongo:7.0
+        command:
+        - mongosh
+        - --eval
+        - |
+          db = db.getSiblingDB("sausage-store");
+          try {
+            db.dropUser("reports");
+          } catch (err) {
+            print("User reports does not exist yet, continuing...");
+          }
+          db.createUser({
+            user: "reports",
+            pwd: "reportspassword",
+            roles: [
+              { role: "readWrite", db: "sausage-store" }
+            ]
+          });
+          print("User reports created successfully!");
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-conf
+              key: MONGO_INITDB_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-conf
+              key: MONGO_INITDB_ROOT_PASSWORD
+      restartPolicy: OnFailure
