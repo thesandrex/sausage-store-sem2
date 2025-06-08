@@ -28,9 +28,9 @@ spec:
             command:
             - mongosh
             - -u
-            - $(MONGO_INITDB_ROOT_USERNAME)
+            - $MONGO_INITDB_ROOT_USERNAME
             - -p
-            - $(MONGO_INITDB_ROOT_PASSWORD)
+            - $MONGO_INITDB_ROOT_PASSWORD
             - --eval
             - db.adminCommand('ping')
           initialDelaySeconds: 5
