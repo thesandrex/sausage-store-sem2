@@ -23,20 +23,6 @@ spec:
               name: mongodb-conf
         ports:
         - containerPort: {{ .Values.mongodb.containerPort }}
-        readinessProbe:
-          exec:
-            command:
-            - mongosh
-            - -u
-            - root
-            - -p
-            - rootpassword
-            - --eval
-            - db.adminCommand('ping')
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          timeoutSeconds: 30
-          failureThreshold: 3
         resources:
           requests:
             memory: "128Mi"
@@ -82,7 +68,7 @@ metadata:
     helm.sh/hook-weight: "0"
     helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
 spec:
-  backoffLimit: 5
+  backoffLimit: 10
   template:
     spec:
       initContainers:
