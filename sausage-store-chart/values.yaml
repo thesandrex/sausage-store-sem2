@@ -19,7 +19,7 @@ frontend:
   image: crocksgift/sausage-store-frontend:latest
   resources:
     requests:
-      memory: "128Mi"
+      memory: "96Mi"
       cpu: "100m"
     limits:
       memory: "128Mi"
@@ -50,10 +50,10 @@ backend:
   imagePullPolicy: Always
   resources:
     requests:
-      memory: "384Mi"
+      memory: "96Mi"
       cpu: "100m"
     limits:
-      memory: "512Mi"
+      memory: "256Mi"
       cpu: "200m"
   containerPort: 8080
   livenessProbe:
@@ -91,7 +91,7 @@ backend-report:
     targetCPUUtilizationPercentage: 75
   resources:
     requests:
-      memory: "128Mi"
+      memory: "96Mi"
       cpu: "100m"
     limits:
       memory: "256Mi"
@@ -108,10 +108,10 @@ infra:
       size: 1Gi
     resources:
       requests:
-        memory: "256Mi"
+        memory: "96Mi"
         cpu: "100m"
       limits:
-        memory: "384Mi"
+        memory: "128Mi"
         cpu: "200m"
   mongodb:
     env:
@@ -120,7 +120,7 @@ infra:
     containerPort: 27017
     resources:
       requests:
-        memory: "128Mi"
+        memory: "96Mi"
         cpu: "50m"
       limits:
         memory: "256Mi"
