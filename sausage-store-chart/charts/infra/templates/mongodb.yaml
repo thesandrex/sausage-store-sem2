@@ -63,10 +63,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: mongodb-init
-  annotations:
-    helm.sh/hook: post-install
-    helm.sh/hook-weight: "0"
-    helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
 spec:
   backoffLimit: 10
   template:
