@@ -22,7 +22,7 @@ frontend:
       memory: "96Mi"
       cpu: "100m"
     limits:
-      memory: "128Mi"
+      memory: "96Mi"
       cpu: "200m"
   nginxConf: nginx.conf
 
@@ -53,7 +53,7 @@ backend:
       memory: "384Mi"
       cpu: "100m"
     limits:
-      memory: "512Mi"
+      memory: "384Mi"
       cpu: "200m"
   containerPort: 8080
   livenessProbe:
@@ -94,7 +94,7 @@ backend-report:
       memory: "96Mi"
       cpu: "100m"
     limits:
-      memory: "256Mi"
+      memory: "96Mi"
       cpu: "200m"
 
 infra:
@@ -111,7 +111,7 @@ infra:
         memory: "96Mi"
         cpu: "100m"
       limits:
-        memory: "128Mi"
+        memory: "96Mi"
         cpu: "200m"
 
   mongodb:
@@ -124,7 +124,7 @@ infra:
         memory: "96Mi"
         cpu: "50m"
       limits:
-        memory: "128Mi"
+        memory: "96Mi"
         cpu: "100m"
   
   mongodbInit:
