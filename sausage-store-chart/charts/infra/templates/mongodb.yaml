@@ -71,7 +71,7 @@ spec:
         image: mongo:7.0
         command:
         - mongosh
-        - "mongodb://root:rootpassword@mongodb:27017/sausage-store"
+        - "mongodb://root:rootpassword@mongodb:27017/admin"
         - --eval
         - |
           db = db.getSiblingDB("sausage-store");
