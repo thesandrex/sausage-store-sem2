@@ -69,6 +69,7 @@ metadata:
     helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
 spec:
   template:
+    backoffLimit: 10
     spec:
       containers:
       - name: mongodb-init
