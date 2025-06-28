@@ -24,7 +24,7 @@ spec:
         ports:
         - containerPort: {{ .Values.mongodb.containerPort }}
         resources:
-          {{- toYaml .Values.resources | nindent 12 }}
+          {{- toYaml .Values.mongodb.resources | nindent 12 }}
         volumeMounts:
         - name: mongodb-data
           mountPath: /data/db
@@ -103,5 +103,5 @@ spec:
               name: mongodb-conf
               key: MONGO_INITDB_ROOT_PASSWORD
         resources:
-          {{- toYaml .Values.resources | nindent 12 }}
+          {{- toYaml .Values.mongodbInit.resources | nindent 12 }}
       restartPolicy: OnFailure
