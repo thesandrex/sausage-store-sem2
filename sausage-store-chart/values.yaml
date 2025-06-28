@@ -19,10 +19,10 @@ frontend:
   image: crocksgift/sausage-store-frontend:latest
   resources:
     requests:
-      memory: "96Mi"
+      memory: "64Mi"
       cpu: "100m"
     limits:
-      memory: "96Mi"
+      memory: "64Mi"
       cpu: "200m"
   nginxConf: nginx.conf
 
@@ -50,10 +50,10 @@ backend:
   imagePullPolicy: Always
   resources:
     requests:
-      memory: "384Mi"
+      memory: "300Mi"
       cpu: "100m"
     limits:
-      memory: "384Mi"
+      memory: "300Mi"
       cpu: "200m"
   containerPort: 8080
   livenessProbe:
@@ -91,10 +91,10 @@ backend-report:
     targetCPUUtilizationPercentage: 75
   resources:
     requests:
-      memory: "96Mi"
+      memory: "64Mi"
       cpu: "100m"
     limits:
-      memory: "96Mi"
+      memory: "64Mi"
       cpu: "200m"
 
 infra:
@@ -132,10 +132,10 @@ infra:
     resources:
       requests:
         cpu: 50m
-        memory: 32Mi
+        memory: 96Mi
       limits:
         cpu: 50m
-        memory: 64Mi
+        memory: 96Mi
 
 # Helm release history limit
 historyMax: 3
