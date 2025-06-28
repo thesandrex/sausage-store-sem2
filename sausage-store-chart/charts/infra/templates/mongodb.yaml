@@ -93,6 +93,13 @@ spec:
             configMapKeyRef:
               name: mongodb-conf
               key: MONGO_INITDB_ROOT_PASSWORD
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 50m
+            memory: 128Mi
       containers:
       - name: mongodb-init
         image: mongo:7.0
@@ -129,4 +136,11 @@ spec:
             configMapKeyRef:
               name: mongodb-conf
               key: MONGO_INITDB_ROOT_PASSWORD
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 50m
+            memory: 128Mi
       restartPolicy: OnFailure
