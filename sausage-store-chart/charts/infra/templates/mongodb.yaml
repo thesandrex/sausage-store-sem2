@@ -68,38 +68,8 @@ metadata:
     helm.sh/hook-weight: "0"
     helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
 spec:
-  backoffLimit: 10
   template:
     spec:
-      initContainers:
-      - name: wait-for-mongodb
-        image: mongo:7.0
-        command:
-        - mongosh
-        - -u
-        - root
-        - -p
-        - rootpassword
-        - --eval
-        - db.adminCommand('ping')
-        env:
-        - name: MONGO_INITDB_ROOT_USERNAME
-          valueFrom:
-            configMapKeyRef:
-              name: mongodb-conf
-              key: MONGO_INITDB_ROOT_USERNAME
-        - name: MONGO_INITDB_ROOT_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: mongodb-conf
-              key: MONGO_INITDB_ROOT_PASSWORD
-        resources:
-          requests:
-            cpu: 50m
-            memory: 64Mi
-          limits:
-            cpu: 50m
-            memory: 64Mi
       containers:
       - name: mongodb-init
         image: mongo:7.0
