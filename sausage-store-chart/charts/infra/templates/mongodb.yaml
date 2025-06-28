@@ -18,9 +18,17 @@ spec:
       containers:
       - name: mongodb
         image: mongo:7.0
-        envFrom:
-          - configMapRef:
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            configMapKeyRef:
               name: mongodb-conf
+              key: MONGO_INITDB_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-conf
+              key: MONGO_INITDB_ROOT_PASSWORD
         ports:
         - containerPort: {{ .Values.mongodb.containerPort }}
         resources:
