@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: backend-report-config
 data:
-  PORT: {{ .Values.backend-report.configMap.port | quote }}
+  PORT: {{ .Values.backendReport.configMap.port | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap

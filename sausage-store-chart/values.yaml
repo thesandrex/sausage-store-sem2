@@ -73,7 +73,7 @@ backend:
         - containerName: "*"
           controlledResources: ["cpu", "memory"]
 
-backend-report:
+backendReport:
   replicas: 1
   strategy:
     type: Recreate
