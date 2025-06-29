@@ -116,8 +116,9 @@ infra:
 
   mongodb:
     env:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_ROOT_USERNAME: reports
+      MONGO_INITDB_ROOT_PASSWORD: reportspassword
+      MONGO_INITDB_DATABASE: sausage-store
     containerPort: 27017
     resources:
       requests:
@@ -126,17 +127,6 @@ infra:
       limits:
         memory: "128Mi"
         cpu: "100m"
-
-  
-  mongodbInit:
-    image: mongo:7.0
-    resources:
-      requests:
-        cpu: 50m
-        memory: 96Mi
-      limits:
-        cpu: 50m
-        memory: 128Mi
 
 # Helm release history limit
 historyMax: 3
