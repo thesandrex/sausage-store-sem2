@@ -7,5 +7,5 @@ spec:
     app: backend-report
   ports:
     - protocol: TCP
-      port: {{ .Values.backend-report.containerPort }}
-      targetPort: {{ .Values.backend-report.containerPort }}
+      port: {{ index .Values "backend-report" "containerPort" }}
+      targetPort: {{ index .Values "backend-report" "containerPort" }}
