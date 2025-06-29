@@ -36,9 +36,16 @@ spec:
         volumeMounts:
         - name: mongodb-data
           mountPath: /data/db
-      volumes:
-        - name: mongodb-data
-          emptyDir: {}
+    volumeClaimTemplates:
+      - metadata:
+          name: mongodb-data
+        spec:
+          accessModes: {{ .Values.persistence.accessModes }}
+          storageClassName: {{ .Values.persistence.storageClass }}
+          resources:
+            requests:
+              storage: {{ .Values.persistence.size }}
+
 ---
 apiVersion: v1
 kind: Service
