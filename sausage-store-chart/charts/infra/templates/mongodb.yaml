@@ -40,11 +40,10 @@ spec:
       - metadata:
           name: mongodb-data
         spec:
-          accessModes: {{ .Values.mongodb.persistence.accessModes }}
-          storageClassName: {{ .Values.mongodb.persistence.storageClass }}
+          accessModes: [ "ReadWriteOnce" ]
           resources:
             requests:
-              storage: {{ .Values.mongodb.persistence.size }}
+              storage: 1Gi
 
 ---
 apiVersion: v1

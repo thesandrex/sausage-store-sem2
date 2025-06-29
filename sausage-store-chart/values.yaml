@@ -126,12 +126,6 @@ infra:
       limits:
         memory: "128Mi"
         cpu: "100m"
-    persistence:
-      enabled: true
-      storageClass: standard
-      accessModes:
-        - ReadWriteOnce
-      size: 1Gi
 
   
   mongodbInit:
