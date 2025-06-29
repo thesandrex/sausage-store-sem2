@@ -37,13 +37,13 @@ spec:
         - name: mongodb-data
           mountPath: /data/db
   volumeClaimTemplates:
-    - metadata:
-        name: mongodb-data
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 1Gi
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
 
 ---
 apiVersion: v1
