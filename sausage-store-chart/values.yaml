@@ -125,7 +125,7 @@ infra:
         memory: "96Mi"
         cpu: "50m"
       limits:
-        memory: "128Mi"
+        memory: "200Mi"
         cpu: "100m"
 
 # Helm release history limit
