@@ -8,7 +8,7 @@ spec:
     kind:       Deployment
     name:       backend
   updatePolicy:
-    updateMode: {{ .Values.backend.vpa.updatePolicy.updateMode | quote }}
+    updateMode: {{ .Values.vpa.updatePolicy.updateMode | quote }}
   resourcePolicy:
     containerPolicies:
-      {{- toYaml .Values.backend.vpa.resourcePolicy.containerPolicies | nindent 6 }}
+      {{- toYaml .Values.vpa.resourcePolicy.containerPolicies | nindent 6 }}

@@ -13,10 +13,10 @@ metadata:
     app.kubernetes.io/component: {{ .Chart.Name }}
     app.kubernetes.io/part-of: {{ .Release.Name }}
 spec:
-  revisionHistoryLimit: {{ .Values.frontend.revisionHistoryLimit }}
-  replicas: {{ .Values.frontend.replicas }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  replicas: {{ .Values.replicas }}
   strategy:
-    type: {{ .Values.frontend.strategy.type }}
+    type: {{ .Values.strategy.type }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-{{ .Chart.Name }}
@@ -27,22 +27,22 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.frontend.image }}
-          imagePullPolicy: {{ .Values.frontend.global.imagePullPolicy }}
+          image: {{ .Values.image }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
           resources:
-{{ toYaml .Values.frontend.resources | indent 12 }} 
+{{ toYaml .Values.resources | indent 12 }} 
           ports:
             - name: {{ .Chart.Name }}
-              containerPort: {{ .Values.frontend.containerPort }}
+              containerPort: {{ .Values.containerPort }}
           volumeMounts:
           - name: {{ .Release.Name }}-{{ .Chart.Name }}-conf
-            mountPath: /etc/nginx/{{ .Values.frontend.nginxConf }}
-            subPath: {{ .Values.frontend.nginxConf }}
+            mountPath: /etc/nginx/{{ .Values.nginxConf }}
+            subPath: {{ .Values.nginxConf }}
             readOnly: true
       volumes:
         - name: {{ .Release.Name }}-{{ .Chart.Name }}-conf
           configMap:
             name: {{ .Release.Name }}-{{ .Chart.Name }}-conf
             items:
-              - key: {{ .Values.frontend.nginxConf }}
-                path: {{ .Values.frontend.nginxConf }} 
+              - key: {{ .Values.nginxConf }}
+                path: {{ .Values.nginxConf }} 

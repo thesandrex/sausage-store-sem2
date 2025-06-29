@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 type: application
-name: backend-report
+name: backendReport
 description: backend-report Helm Chart
 
 version: 0.1.0

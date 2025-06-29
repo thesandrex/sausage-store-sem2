@@ -7,15 +7,15 @@ spec:
   ingressClassName: "nginx"
   tls:
     - hosts:
-        - {{ .Values.frontend.ingress.host }}
+        - {{ .Values.ingress.host }}
   rules:
-    - host: {{ .Values.frontend.ingress.host }}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
-        - path: {{ .Values.frontend.ingress.path }}
-          pathType: {{ .Values.frontend.ingress.pathType }}
+        - path: {{ .Values.ingress.path }}
+          pathType: {{ .Values.ingress.pathType }}
           backend:
             service:
               name: {{ .Release.Name }}-{{ .Chart.Name }}-service
               port:
-                number: {{ .Values.frontend.service.port }}
+                number: {{ .Values.service.port }}
