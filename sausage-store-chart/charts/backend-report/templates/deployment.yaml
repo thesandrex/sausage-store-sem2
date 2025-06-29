@@ -3,9 +3,9 @@ kind: Deployment
 metadata:
   name: backend-report
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.backend-report.replicas }}
   strategy:
-    type: {{ .Values.strategy.type }}
+    type: {{ .Values.backend-report.strategy.type }}
   selector:
     matchLabels:
       app: backend-report
@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
         - name: backend-report
-          image: {{ .Values.image }}
-          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          image: {{ .Values.backend-report.image }}
+          imagePullPolicy: {{ .Values.backend-report.imagePullPolicy }}
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - containerPort: {{ .Values.backend-report.containerPort }}
           envFrom:
             - configMapRef:
                 name: backend-report-config
@@ -30,7 +30,7 @@ spec:
               mountPath: /app/.env
               subPath: .env
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.backend-report.resources | nindent 12 }}
       volumes:
         - name: env-config
           configMap:

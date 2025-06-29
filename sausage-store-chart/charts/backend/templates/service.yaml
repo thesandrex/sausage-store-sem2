@@ -8,8 +8,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.backend.service.port }}
       protocol: TCP
-      targetPort: {{ .Values.service.port }}
+      targetPort: {{ .Values.backend.service.port }}
   selector:
     app: {{ .Release.Name }}-{{ .Chart.Name }}
