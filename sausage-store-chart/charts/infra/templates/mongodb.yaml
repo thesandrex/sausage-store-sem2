@@ -91,6 +91,13 @@ spec:
                 roles: [{ role: 'readWrite', db: '${MONGO_REPORTS_DATABASE}' }]
               });
               "
+          resources:
+            requests:
+              memory: "96Mi"
+              cpu: "50m"
+            limits:
+              memory: "96Mi"
+              cpu: "100m"
       restartPolicy: OnFailure
   backoffLimit: 4
 
