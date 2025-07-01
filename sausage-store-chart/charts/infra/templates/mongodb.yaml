@@ -22,7 +22,7 @@ spec:
             - configMapRef:
                 name: mongodb-conf
           ports:
-            - containerPort: {{ .Values.infra.mongodb.containerPort }}
+            - containerPort: {{ .Values.mongodb.containerPort }}
           resources:
             requests:
               memory: "128Mi"
@@ -51,8 +51,8 @@ metadata:
     app: mongodb
 spec:
   ports:
-    - port: {{ .Values.infra.mongodb.containerPort }}
-      targetPort: {{ .Values.infra.mongodb.containerPort }}
+    - port: {{ .Values.mongodb.containerPort }}
+      targetPort: {{ .Values.mongodb.containerPort }}
   selector:
     app: mongodb
   clusterIP: None
