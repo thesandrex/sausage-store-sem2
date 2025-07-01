@@ -116,9 +116,11 @@ infra:
 
   mongodb:
     env:
-      MONGO_INITDB_ROOT_USERNAME: reports
-      MONGO_INITDB_ROOT_PASSWORD: reportspassword
-      MONGO_INITDB_DATABASE: sausage-store
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_REPORTS_DATABASE: sausage-store
+      MONGO_REPORTS_USERNAME: reports
+      MONGO_REPORTS_PASSWORD: reportspassword
     containerPort: 27017
     resources:
       requests:
